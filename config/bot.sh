@@ -10,7 +10,7 @@ dir_bot=$dir_root/jbot
 dir_repo=$dir_root/repo
 file_bot_setting_user=$dir_root/config/bot.json
 repo_path="${dir_repo}/SuMaiKaDe_bot"
-url="https://ghproxy.com/https://github.com/SuMaiKaDe/bot.git"
+url="https://ghproxy.com/https://github.com/wangzhaoming/bot.git"
 repo_path="${dir_repo}/dockerbot"
 
 git_pull_scripts() {
