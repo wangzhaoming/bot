@@ -6,7 +6,7 @@ from .. import jdbot, chat_id, logger, LOG_DIR, ch_name, BOT_SET
 from ..bot.utils import QL, press_event, split_list, cron_manage, AUTH_FILE
 
 
-@jdbot.on(events.NewMessage(from_users=chat_id, pattern=r'^/cron'))
+@jdbot.on(events.NewMessage(chats=chat_id, pattern=r'^/cron'))
 async def my_cron(event):
     """接收/cron后执行程序"""
     logger.info(f'即将执行{event.raw_text}命令')
@@ -132,7 +132,7 @@ if ch_name:
         from_users=chat_id, pattern=BOT_SET['命令别名']['cron']))
 
 
-@jdbot.on(events.NewMessage(from_users=chat_id, pattern=r'^/addcron'))
+@jdbot.on(events.NewMessage(chats=chat_id, pattern=r'^/addcron'))
 async def my_addcron(event):
     try:
         SENDER = event.sender_id

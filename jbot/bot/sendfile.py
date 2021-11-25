@@ -4,7 +4,7 @@ from .utils import log_btn
 import os
 
 
-@jdbot.on(events.NewMessage(from_users=chat_id, pattern=r'^/log'))
+@jdbot.on(events.NewMessage(chats=chat_id, pattern=r'^/log'))
 async def bot_log(event):
     '''定义日志文件操作'''
     SENDER = event.sender_id
@@ -16,13 +16,13 @@ async def bot_log(event):
         while path:
             path, msg, page, filelist = await log_btn(conv, SENDER, path, msg, page, filelist)
 
-@jdbot.on(events.NewMessage(from_users=chat_id, pattern=r'^/botlog'))
+@jdbot.on(events.NewMessage(chats=chat_id, pattern=r'^/botlog'))
 async def bot_run_log(event):
     '''定义日志文件操作'''
     await jdbot.send_message(chat_id,'bot运行日志',file=f'{LOG_DIR}/bot/run.log')
 
 
-@jdbot.on(events.NewMessage(from_users=chat_id, pattern=r'^/getfile'))
+@jdbot.on(events.NewMessage(chats=chat_id, pattern=r'^/getfile'))
 async def bot_getfile(event):
     '''定义获取文件命令'''
     SENDER = event.sender_id

@@ -6,7 +6,7 @@ from .. import jdbot, chat_id, JD_DIR, BOT_SET, ch_name
 from .utils import split_list, logger, press_event
 
 
-@jdbot.on(events.NewMessage(from_users=chat_id, pattern='/edit'))
+@jdbot.on(events.NewMessage(chats=chat_id, pattern='/edit'))
 async def my_edit(event):
     '''定义编辑文件操作'''
     logger.info(f'即将执行{event.raw_text}命令')

@@ -4,7 +4,7 @@ from .. import jdbot, chat_id, SCRIPTS_DIR, CONFIG_DIR, logger
 from .utils import press_event, backup_file, add_cron, cmd, DIY_DIR, TASK_CMD, V4
 
 
-@jdbot.on(events.NewMessage(from_users=chat_id))
+@jdbot.on(events.NewMessage(chats=chat_id))
 async def bot_get_file(event):
     '''定义文件操作'''
     try:

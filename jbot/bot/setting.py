@@ -5,7 +5,7 @@ from .. import jdbot, chat_id, BOT_SET_JSON_FILE_USER, BOT_SET, ch_name
 from .utils import split_list, logger, press_event
 
 
-@jdbot.on(events.NewMessage(from_users=chat_id, pattern='^/set$'))
+@jdbot.on(events.NewMessage(chats=chat_id, pattern='^/set$'))
 async def bot_set(event):
     SENDER = event.sender_id
     try:
@@ -61,7 +61,7 @@ async def bot_set(event):
         logger.error(f'something wrong,I\'m sorry\n{str(e)}')
 
 
-@jdbot.on(events.NewMessage(from_users=chat_id, pattern='^/setname$'))
+@jdbot.on(events.NewMessage(chats=chat_id, pattern='^/setname$'))
 async def bot_setname(event):
     SENDER = event.sender_id
     try:

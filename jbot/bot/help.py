@@ -2,7 +2,7 @@ from telethon import events
 from .. import jdbot, chat_id
 
 
-@jdbot.on(events.NewMessage(from_users=chat_id, pattern='^/help'))
+@jdbot.on(events.NewMessage(chats=chat_id, pattern='^/help'))
 async def bot_help(event):
     '''接收/help命令后执行程序'''
     msg_text = event.raw_text.split(' ')

@@ -43,7 +43,7 @@ def creat_qr(text):
     # 保存二维码
     img.save(QR_IMG_FILE)
 
-@jdbot.on(events.NewMessage(from_users=chat_id,pattern=r'^/userlogin$'))
+@jdbot.on(events.NewMessage(chats=chat_id,pattern=r'^/userlogin$'))
 async def user_login(event):
     try:
         user.connect()
@@ -55,7 +55,7 @@ async def user_login(event):
     except Exception as e:
         await jdbot.send_message(chat_id,'登录失败\n'+str(e))
 
-@jdbot.on(events.NewMessage(from_users=chat_id,pattern=r'^/rmuser$'))
+@jdbot.on(events.NewMessage(chats=chat_id,pattern=r'^/rmuser$'))
 async def user_login(event):
     try:
         await jdbot.send_message(chat_id,'即将删除user.session')
@@ -65,7 +65,7 @@ async def user_login(event):
         await jdbot.send_message(chat_id,'删除失败\n'+str(e))
 
 
-@jdbot.on(events.NewMessage(from_users=chat_id,pattern=r'^/codelogin$'))
+@jdbot.on(events.NewMessage(chats=chat_id,pattern=r'^/codelogin$'))
 async def user_login(event):
     try:
         await user.connect()

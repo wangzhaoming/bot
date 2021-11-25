@@ -3,7 +3,7 @@ from .. import jdbot, chat_id, BOT_SET, ch_name
 from .utils import cmd, TASK_CMD
 
 
-@jdbot.on(events.NewMessage(from_users=chat_id, pattern='/node'))
+@jdbot.on(events.NewMessage(chats=chat_id, pattern='/node'))
 async def bot_node(event):
     '''接收/node命令后执行程序'''
     msg_text = event.raw_text.split(' ')

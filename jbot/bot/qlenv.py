@@ -6,7 +6,7 @@ from .. import jdbot, chat_id, logger, LOG_DIR, ch_name, BOT_SET
 from ..bot.utils import QL, press_event,env_manage_QL, split_list, AUTH_FILE
 
 
-@jdbot.on(events.NewMessage(from_users=chat_id, pattern=r'^/env'))
+@jdbot.on(events.NewMessage(chats=chat_id, pattern=r'^/env'))
 async def bot_env_ql(event):
     '''接收/env后执行程序'''
     msg_text = event.raw_text.split(' ')
@@ -111,7 +111,7 @@ async def bot_env_ql(event):
         logger.error(f'something wrong,I\'m sorry\n{str(e)}')
 
 
-@jdbot.on(events.NewMessage(from_users=chat_id, pattern=r'^/addenv'))
+@jdbot.on(events.NewMessage(chats=chat_id, pattern=r'^/addenv'))
 async def bot_addenv(event):
     try:
         SENDER = event.sender_id

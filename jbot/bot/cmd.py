@@ -3,7 +3,7 @@ from .. import jdbot, START_CMD, chat_id, logger, BOT_SET, ch_name
 from .utils import cmd
 
 
-@jdbot.on(events.NewMessage(from_users=chat_id, pattern='/cmd'))
+@jdbot.on(events.NewMessage(chats=chat_id, pattern='/cmd'))
 async def my_cmd(event):
     """接收/cmd命令后执行程序"""
     logger.info(f'即将执行{event.raw_text}命令')

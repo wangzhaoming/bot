@@ -3,7 +3,7 @@ from .. import jdbot, chat_id, JD_DIR, BOT_SET, ch_name
 from .utils import cmd, snode_btn
 
 
-@jdbot.on(events.NewMessage(from_users=chat_id, pattern=r'^/snode'))
+@jdbot.on(events.NewMessage(chats=chat_id, pattern=r'^/snode'))
 async def my_snode(event):
     '''定义supernode文件命令'''
     SENDER = event.sender_id
