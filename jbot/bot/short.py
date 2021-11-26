@@ -13,9 +13,12 @@ async def my_a(event):
         shortcuts = f.readlines()
     try:
         cmdtext = None
+
+        cmds = {shortcut.split(
+                '-->')[0]: shortcut.split('-->')[-1] for shortcut in shortcuts if '-->' in shortcut}
+
         async with jdbot.conversation(SENDER, timeout=60) as conv:
-            markup = [Button.inline(shortcut.split(
-                '-->')[0], data=str(shortcut.split('-->')[-1])) for shortcut in shortcuts if '-->' in shortcut]
+            markup = [Button.inline(c, data=c) for c in cmds]
             markup = split_list(markup, 3)
             markup.append([Button.inline('取消', data='cancel')])
             msg = await jdbot.edit_message(msg, '请做出您的选择：', buttons=markup)
@@ -27,7 +30,7 @@ async def my_a(event):
                 conv.cancel()
             else:
                 await jdbot.delete_messages(chat_id, msg)
-                cmdtext = res
+                cmdtext = cmds[res]
                 conv.cancel()
         if cmdtext:
             await cmd(cmdtext.replace('nohup ', ''))
@@ -38,21 +41,6 @@ async def my_a(event):
         logger.error(f'something wrong,I\'m sorry\n{str(e)}', exc_info=1)
 
 
-@jdbot.on(events.NewMessage(chats=chat_id, pattern=r'^/b'))
-async def my_b(event):
-    markup = []
-    msg = await jdbot.send_message(chat_id, '正在查询您的常用命令，请稍后')
-    with open(SHORTCUT_FILE, 'r', encoding='utf-8') as f:
-        shortcuts = f.readlines()
-    try:
-        await jdbot.delete_messages(chat_id, msg)
-        markup = [Button.text(shortcut, single_use=True)
-                  for shortcut in shortcuts if '-->' not in shortcut]
-        markup = split_list(markup, int(BOT_SET['每页列数']))
-        await jdbot.send_message(chat_id, '请做出您的选择：', buttons=markup)
-    except Exception as e:
-        await jdbot.edit_message(msg, f'something wrong,I\'m sorry\n{str(e)}')
-        logger.error(f'something wrong,I\'m sorry\n{str(e)}')
 
 
 @jdbot.on(events.NewMessage(chats=chat_id, pattern=r'^/clearboard'))
@@ -66,4 +54,3 @@ async def my_clear(event):
 if ch_name:
     jdbot.add_event_handler(my_a, events.NewMessage(
         from_users=chat_id, pattern=BOT_SET['命令别名']['a']))
-    jdbot.add_event_handler(my_b, events.NewMessage(chats=chat_id, pattern=BOT_SET['命令别名']['b']))
