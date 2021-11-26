@@ -5,7 +5,7 @@ from .. import jdbot, chat_id, BOT_SET_JSON_FILE_USER, BOT_SET, ch_name
 from .utils import split_list, logger, press_event
 
 
-@jdbot.on(events.NewMessage(chats=chat_id, pattern='^/set$'))
+@jdbot.on(events.NewMessage(chats=chat_id, pattern='^/set'))
 async def bot_set(event):
     SENDER = event.sender_id
     try:

@@ -4,7 +4,7 @@ from asyncio import exceptions
 from .. import jdbot, chat_id, SHORTCUT_FILE, logger, BOT_SET, ch_name
 
 
-@jdbot.on(events.NewMessage(chats=chat_id, pattern=r'^/a$'))
+@jdbot.on(events.NewMessage(chats=chat_id, pattern=r'^/a'))
 async def my_a(event):
     markup = []
     SENDER = event.sender_id
@@ -37,7 +37,7 @@ async def my_a(event):
         logger.error(f'something wrong,I\'m sorry\n{str(e)}')
 
 
-@jdbot.on(events.NewMessage(chats=chat_id, pattern=r'^/b$'))
+@jdbot.on(events.NewMessage(chats=chat_id, pattern=r'^/b'))
 async def my_b(event):
     markup = []
     msg = await jdbot.send_message(chat_id, '正在查询您的常用命令，请稍后')
@@ -54,7 +54,7 @@ async def my_b(event):
         logger.error(f'something wrong,I\'m sorry\n{str(e)}')
 
 
-@jdbot.on(events.NewMessage(chats=chat_id, pattern=r'^/clearboard$'))
+@jdbot.on(events.NewMessage(chats=chat_id, pattern=r'^/clearboard'))
 async def my_clear(event):
     try:
         await jdbot.send_message(chat_id, '已清空您的keyboard',buttons=Button.clear())

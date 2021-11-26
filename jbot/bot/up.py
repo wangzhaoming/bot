@@ -5,7 +5,7 @@ from .update import version, botlog
 import requests
 
 
-@jdbot.on(events.NewMessage(chats=chat_id, pattern='^/up$'))
+@jdbot.on(events.NewMessage(chats=chat_id, pattern='^/up'))
 async def bot_up(event):
     try:
         msg = await jdbot.send_message(chat_id, '开始更新程序，请稍候，\n提示开始运行后，机器人会被杀死，并重新启动\n因此后边更新信息不会再推送，不代表机器人不理你了')
@@ -19,6 +19,6 @@ async def bot_up(event):
         await jdbot.send_message(chat_id, str(e))
 
 
-@jdbot.on(events.NewMessage(chats=chat_id, pattern=r'^/ver$', incoming=True))
+@jdbot.on(events.NewMessage(chats=chat_id, pattern=r'^/ver', incoming=True))
 async def bot_ver(event):
     await jdbot.send_message(chat_id, f'当前版本\n{version}\n{botlog}')
