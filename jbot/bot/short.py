@@ -21,6 +21,7 @@ async def my_a(event):
             msg = await jdbot.edit_message(msg, '请做出您的选择：', buttons=markup)
             convdata = await conv.wait_event(press_event(SENDER))
             res = bytes.decode(convdata.data)
+            logger.info(res)
             if res == 'cancel':
                 msg = await jdbot.edit_message(msg, '对话已取消')
                 conv.cancel()
