@@ -111,6 +111,95 @@ async def bot_env_ql(event):
         logger.error(f'something wrong,I\'m sorry\n{str(e)}')
 
 
+@jdbot.on(events.NewMessage(chats=chat_id, pattern=r'^/jdcookie'))
+async def bot_env_ql(event):
+    '''接收/jdcookie后执行程序'''
+    msg_text = event.raw_text.split(' ')
+    try:
+        SENDER = event.sender_id
+        msg = await jdbot.send_message(chat_id, '正在查询请稍后')
+
+        with open(AUTH_FILE, 'r', encoding='utf-8') as f:
+            auth = json.load(f)
+        buttons = [{'name': '编辑', 'data': 'edit'}, {'name': '取消', 'data': 'cancel'}]
+
+        if isinstance(msg_text, list) and len(msg_text) == 2:
+            text = msg_text[-1]
+        else:
+            text = None
+        if not text:
+            await jdbot.edit_message(msg, '请正确使用jdcookie命令,后边需跟cookie的序号\neg: /env 10')
+            return
+        go_up = True
+        async with jdbot.conversation(SENDER, timeout=120) as conv:
+            while go_up:
+                res = env_manage_QL('search', 'JD_COOKIE', auth['token'])
+                if res['code'] == 200:
+                    await jdbot.delete_messages(chat_id, msg)
+                    markup = [Button.inline(
+                        i['name'], data=str(res['data'].index(i))) for i in res['data']]
+                    markup = split_list(markup, int(BOT_SET['每页列数']))
+                    markup.append([Button.inline('取消', data='cancel')])
+                    msg = await jdbot.send_message(
+                        chat_id, '查询结果如下，点击按钮查看详细信息', buttons=markup)
+                    convdata = await conv.wait_event(press_event(SENDER))
+                    resp = bytes.decode(convdata.data)
+                    if resp == 'cancel':
+                        await jdbot.edit_message(msg, '对话已取消')
+                        conv.cancel()
+                        go_up = False
+                        return
+
+                    cookies = res['data'][int(resp)]['value'].split('&')
+                    cookie = cookies[int(text) - 1]
+
+                    markup = [Button.inline(i['name'], data=i['data'])
+                            for i in buttons]
+                    markup = split_list(markup, int(BOT_SET['每页列数']))
+                    msg = await jdbot.edit_message(msg, cookie, buttons=markup)
+                    convdata = await conv.wait_event(press_event(SENDER))
+                    btnres = bytes.decode(convdata.data)
+                    if btnres == 'cancel':
+                        msg = await jdbot.edit_message(msg, '对话已取消')
+                        conv.cancel()
+                        go_up = False
+                        return
+                    elif btnres == 'edit':
+                        go_up = False
+                        await jdbot.delete_messages(chat_id, msg)
+                        msg = await conv.send_message(f'{cookie}\n请复制信息并进行修改')
+                        respones = await conv.get_response()
+                        respones = respones.raw_text
+
+                        cookies[int(text) - 1] = respones
+                        res['data'][int(resp)]['value'] = '&'.join(cookies)
+
+                        cronres = env_manage_QL(
+                            'edit', res['data'][int(resp)], auth['token'])
+                    
+                    if cronres['code'] == 200:
+                        if 'data' not in cronres.keys():
+                            cronres['data'] = 'success'
+                        await jdbot.delete_messages(chat_id, msg)
+                        if len(cronres['data']) <= 4000:
+                            msg = await jdbot.send_message(chat_id, f"指令发送成功，结果如下：\n{cronres['data']}")
+                        elif len(res) > 4000:
+                            _log = f'{LOG_DIR}/bot/qlcron.log'
+                            with open(_log, 'w+', encoding='utf-8') as f:
+                                f.write(cronres['data'])
+                            msg = await jdbot.send_message(chat_id, '日志结果较长，请查看文件', file=_log)
+                            os.remove(_log)
+                    else:
+                        await jdbot.edit_message(msg, f'something wrong,I\'m sorry\n{cronres["data"]}')
+                else:
+                    go_up = False
+                    await jdbot.send_message(chat_id, f'something wrong,I\'m sorry\n{str(res["data"])}')
+    except exceptions.TimeoutError:
+        msg = await jdbot.edit_message(msg, '选择已超时，对话已停止')
+    except Exception as e:
+        msg = await jdbot.edit_message(msg, f'something wrong,I\'m sorry\n{str(e)}')
+        logger.error(f'something wrong,I\'m sorry\n{str(e)}')
+
 @jdbot.on(events.NewMessage(chats=chat_id, pattern=r'^/addenv'))
 async def bot_addenv(event):
     try:
