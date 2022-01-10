@@ -39,7 +39,7 @@ def Ver_Main(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
         res = func(*args, **kwargs)
-        if str(res).find('valid sign') > -1 :
+        if str(res).find('valid sign') > -1 or str(res).find('jwt expired') > -1:
             msg = ql_login()
             return {'code': 400, 'data': msg}
         return res
