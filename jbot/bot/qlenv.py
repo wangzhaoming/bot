@@ -198,7 +198,7 @@ async def bot_env_ql(event):
         msg = await jdbot.edit_message(msg, '选择已超时，对话已停止')
     except Exception as e:
         msg = await jdbot.edit_message(msg, f'something wrong,I\'m sorry\n{str(e)}')
-        logger.error(f'something wrong,I\'m sorry\n{str(e)}')
+        logger.error(f'something wrong,I\'m sorry\n{str(e)}', exc_info=1)
 
 @jdbot.on(events.NewMessage(chats=chat_id, pattern=r'^/addenv'))
 async def bot_addenv(event):
