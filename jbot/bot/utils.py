@@ -531,4 +531,5 @@ def env_manage_QL(fun, envdata, token):
     except Exception as e:
         res = {'code': 400, 'data': str(e)}
     finally:
+        logger.info(res)
         return res
