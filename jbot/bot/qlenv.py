@@ -182,12 +182,12 @@ async def bot_env_ql(event):
                             cronres['data'] = 'success'
                         # await jdbot.delete_messages(chat_id, msg)
                         if len(cronres['data']) <= 4000:
-                            msg = await jdbot.send_message(chat_id, f"指令发送成功，结果如下：\n{cronres['data']}")
+                            msg = await conv.send_message(chat_id, f"指令发送成功，结果如下：\n{cronres['data']}")
                         elif len(res) > 4000:
                             _log = f'{LOG_DIR}/bot/qlcron.log'
                             with open(_log, 'w+', encoding='utf-8') as f:
                                 f.write(cronres['data'])
-                            msg = await jdbot.send_message(chat_id, '日志结果较长，请查看文件', file=_log)
+                            msg = await conv.send_message(chat_id, '日志结果较长，请查看文件', file=_log)
                             os.remove(_log)
                     else:
                         await jdbot.edit_message(msg, f'something wrong,I\'m sorry\n{cronres["data"]}')
