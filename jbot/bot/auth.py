@@ -37,8 +37,11 @@ async def bot_ql_login(event):
 def ql_login(code: str = None):
 
     try:
-        with open(AUTH_FILE, 'r', encoding='utf-8') as f:
+        with open(AUTH_FILE, 'rw', encoding='utf-8') as f:
             auth = json.load(f)
+            auth['retries'] = 0
+            json.dump(auth, f)
+
         token = auth['token']
         if token and len(token) > 10:
             headers = {

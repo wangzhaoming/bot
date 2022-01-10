@@ -6,13 +6,6 @@ from .. import jdbot, chat_id, logger, LOG_DIR, ch_name, BOT_SET
 from ..bot.utils import QL, press_event,env_manage_QL, split_list, AUTH_FILE
 
 
-@jdbot.on(events.NewMessage(chats=chat_id, pattern=r'^/authreset$'))
-async def reset(event):
-    with open(AUTH_FILE, 'rw', encoding='utf-8') as f:
-        auth = json.load(f)
-        auth['retries'] = 0
-        json.dump(auth, f)
-
 @jdbot.on(events.NewMessage(chats=chat_id, pattern=r'^/env'))
 async def bot_env_ql(event):
     '''接收/env后执行程序'''
