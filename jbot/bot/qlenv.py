@@ -128,7 +128,7 @@ async def bot_env_ql(event):
         else:
             text = None
         if not text:
-            await jdbot.edit_message(msg, '请正确使用jdcookie命令,后边需跟cookie的序号\neg: /env 10')
+            await jdbot.edit_message(msg, '请正确使用jdcookie命令,后边需跟cookie的序号\neg: /jdcookie 10')
             return
         go_up = True
         async with jdbot.conversation(SENDER, timeout=120) as conv:
@@ -180,7 +180,7 @@ async def bot_env_ql(event):
                     if cronres['code'] == 200:
                         if 'data' not in cronres.keys():
                             cronres['data'] = 'success'
-                        await jdbot.delete_messages(chat_id, msg)
+                        # await jdbot.delete_messages(chat_id, msg)
                         if len(cronres['data']) <= 4000:
                             msg = await jdbot.send_message(chat_id, f"指令发送成功，结果如下：\n{cronres['data']}")
                         elif len(res) > 4000:
