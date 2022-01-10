@@ -57,6 +57,8 @@ def ql_login():
             return '自动登录成功，请重新执行命令'
         elif res['message'].find('两步验证') > -1:
             return ' 当前登录已过期，且已开启两步登录验证，请使用命令/auth 六位验证码完成登录'
+        else
+            return str(res)
     except Exception as e:
         return '自动登录出错：' + str(e)
 
