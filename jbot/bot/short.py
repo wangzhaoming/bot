@@ -4,7 +4,7 @@ from asyncio import exceptions
 from .. import jdbot, chat_id, SHORTCUT_FILE, logger, BOT_SET, ch_name
 
 
-@jdbot.on(events.NewMessage(chats=chat_id, pattern=r'^/a'))
+@jdbot.on(events.NewMessage(chats=chat_id, pattern=r'^/a$'))
 async def my_a(event):
     markup = []
     SENDER = event.sender_id
