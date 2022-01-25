@@ -58,7 +58,7 @@ def ql_login(code: str = None):
                     'password': auth['password'], 'code': code}
             res = requests.put(url, json=data).json()
         else:
-            url = 'http://127.0.0.1:5600/api/login'
+            url = 'http://127.0.0.1:5600/api/user/login'
             data = {'username': auth['username'], 'password': auth['password']}
             res = requests.post(url, json=data).json()
         if res['code'] == 200:
