@@ -513,20 +513,20 @@ def env_manage_QL(fun, envdata, token):
             data = {
                 'name': envdata['name'],
                 'value': envdata['value'],
-                '_id': envdata['_id'],
+                'id': envdata['id'],
                 'remarks': envdata['remarks'] if 'remarks' in envdata.keys() else ''
             }
             res = requests.put(url, json=data, headers=headers).json()
         elif fun == 'disable':
-            data = [envdata['_id']]
+            data = [envdata['id']]
             res = requests.put(url+'/disable', json=data,
                                headers=headers).json()
         elif fun == 'enable':
-            data = [envdata['_id']]
+            data = [envdata['id']]
             res = requests.put(url+'/enable', json=data,
                                headers=headers).json()
         elif fun == 'del':
-            data = [envdata['_id']]
+            data = [envdata['id']]
             res = requests.delete(url, json=data, headers=headers).json()
         else:
             res = {'code': 400, 'data': '未知功能'}
